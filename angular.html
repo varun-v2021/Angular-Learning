@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>-->
+
+<body ng-app="myApp" >
+
+<div ng-controller="myCtrl4">
+<p>The url of this page is:</p>
+<h3>{{myUrl}}</h3>
+<p>This example uses the built-in $location service to get the absolute url of the page.</p>
+</div>
+
+<div ng-controller="myCtrl5">
+<p>The time is:</p>
+
+<h1>{{theTime}}</h1>
+<p>This example uses the built-in $interval service .</p>
+</div>
+<h2> Note: Two services cannot be used in same div</h2>
+<p>The rootScope's favorite color:</p>
+<h1>{{color}}</h1>
+
+<div ng-controller="personCtrl">
+First Name: <input type="text" ng-model="firstName"><br>
+Last Name: <input type="text" ng-model="lastName"><br>
+<br>
+Full Name: {{fullName()}}
+</div>
+
+<p></p>
+
+<div ng-controller="namesCtrl">
+<ul>
+  <li ng-repeat="x in names">
+    {{ x.name + ', ' + x.country }}
+  </li>
+</ul>
+Ordered by Country
+<ul>
+  <li ng-repeat="x in names | orderBy:'country'">
+    {{ x.name + ', ' + x.country }}
+  </li>
+</ul>
+<p>This example displays only the names containing the letter "i".</p>
+<ul>
+  <li ng-repeat="x in names | filter : 'i'">
+    {{ x }}
+  </li>
+</ul>
+Type a letter in the input field, and the list will shrink/grow depending on the match:
+<p><input type="text" ng-model="test"></p>
+
+<ul>
+  <li ng-repeat="x in names | filter : test">
+    {{ x }}
+  </li>
+</ul>
+
+<table border="1" width="100%">
+  <tr>
+    <th ng-click="orderByMe('name')">Name</th>
+    <th ng-click="orderByMe('country')">Country</th>
+  </tr>
+  <tr ng-repeat="x in names | orderBy:myOrderBy">
+    <td>{{x.name}}</td>
+    <td>{{x.country}}</td>
+  </tr>
+</table>
+
+</div>
+<br></br>
+<div ng-app="myCtrl6">
+Convert the number 255, using a custom made service inside a custom made filter:
+
+<h1>{{255 | myFormat}}</h1>
+
+</div>
+
+<div ng-controller="myCtrl8">
+Select Box Using ng-options
+<select ng-model="selectedName" ng-options="x2 for x2 in names">
+</select>
+
+</div>
+
+<div ng-controller="myCtrl9">
+<p>Select a car:</p>
+
+<select ng-model="selectedCar">
+<option ng-repeat="x3 in cars" value="{{x3.model}}">{{x3.model}}</option>
+</select>
+
+<h1>You selected: {{selectedCar}}</h1>
+
+<p>When you use the ng-repeat directive to create dropdown lists, the selected value must be a string.</p>
+<p>In this example you will have to choose between the color or the model to be your selected value.</p>
+
+</div>
+
+<div ng-controller="myCtrl10">
+<select ng-model="selectedCar" ng-options="x4.model for x4 in cars">
+</select>
+
+<h1>You selected: {{selectedCar.model}}</h1>
+<p>Its color is: {{selectedCar.color}}</p>
+<p>When you use the ng-options directive to create dropdown lists, the selected value can be an object.</p>
+<p>In this example you can display both the model and the color of the selected element.</p>
+</div>
+
+<p>The rootScope's favorite color:</p>
+<h1>{{color}}</h1>
+
+<p>The rootScope's favorite color in Uppercase:</p>
+<h1>{{color | uppercase}}</h1>
+
+<div ng-controller="myCtrl">
+
+<p>The scope of the controller's favorite color:</p>
+<h1>{{color}}</h1>
+
+
+
+<p>This header will change after two seconds:</p>
+
+<h1>{{myHeader}}</h1>
+
+<p>The hexadecimal value of 255 is:</p>
+
+<h1>{{hex}}</h1>
+<p>A custom service with a method that converts a given number into a hexadecimal number.</p>
+</div>
+
+<br></br>
+
+<div ng-controller="myCtrl7">
+<p>Today's welcome message is:</p>
+<h1>{{myWelcome}}</h1>
+</div>
+<br></br>
+
+<div ng-controller="headersCtrl"> 
+Headers from the GET JSON response are:
+<ul>
+  <li ng-repeat="x1 in myData">
+     {{ x1.Name + ', ' + x1.Country }}
+  </li>
+</ul>
+
+</div>
+
+<div ng-controller="myCtrl2">
+
+<p>The scope of the controller's favorite color:</p>
+<h1>{{somecolor}}</h1>
+
+</div>
+
+<p>The rootScope's favorite color is still:</p>
+<h1>{{color}}</h1>
+
+<script>
+var app = angular.module('myApp', []);
+app.run(function($rootScope) {
+    $rootScope.color = "blue";
+});
+app.controller('myCtrl4',function($scope,$location){ //example for $location service
+	$scope.myUrl = $location.absUrl();
+});
+
+app.controller('myCtrl5',function($scope,$interval){  //example for $interval service
+	$scope.theTime = new Date().toLocaleTimeString();
+	$interval(function () {
+      $scope.theTime = new Date().toLocaleTimeString();
+  }, 1000);
+});
+app.controller('personCtrl', function($scope) {
+    $scope.firstName = "Varun";
+    $scope.lastName = "Venkatesh";
+    $scope.fullName = function(){
+    	return $scope.firstName + " " + $scope.lastName;
+    };
+});
+app.controller('namesCtrl', function($scope) {
+    $scope.names = [
+        {name:'Jani',country:'Norway'},
+        {name:'Hege',country:'Sweden'},
+        {name:'Kai',country:'Denmark'}
+    ];
+});
+app.controller('namesCtrl', function($scope) {
+  $scope.names = [
+    {name:'Jani',country:'Norway'},
+    {name:'Carl',country:'Sweden'},
+    {name:'Margareth',country:'England'},
+    {name:'Hege',country:'Norway'},
+    {name:'Joe',country:'Denmark'},
+    {name:'Gustav',country:'Sweden'},
+    {name:'Birgit',country:'Denmark'},
+    {name:'Mary',country:'England'},
+    {name:'Kai',country:'Norway'}
+  ];
+  $scope.orderByMe = function(x) {
+    $scope.myOrderBy = x;
+  }
+});
+app.controller('myCtrl', function($scope) {
+    $scope.color = "red";
+});
+app.controller('myCtrl2', function($scope) {
+    $scope.somecolor = "green";
+});
+/*app.controller('myCtrl7', function($scope, $http) { //example for $http service
+  $http.get("https://httpbin.org/get").then(function (response) {
+      $scope.myWelcome = response.data;
+  });
+});*/
+/*app.controller('myCtrl7', function($scope, $http) { //example for $http service with different implementation
+    $http({
+        method : "GET",
+        url : "https://httpbin.org/get"
+    }).then(function mySuccess(response) {
+        $scope.myWelcome = response.data;
+    }, function myError(response) {
+        $scope.myWelcome = response.statusText;
+    });
+});*/
+app.controller('myCtrl7', function($scope, $http) {
+  $http.get("https://httpbin.org/get1")	//WRONG url get request to mimic failure
+  //First function handles success
+  .then(function(response) {
+      $scope.myWelcome = response.data;
+	  //Second function handles error
+  }, function(response) {
+      $scope.myWelcome = "Something went wrong";
+  });
+});
+app.controller('headersCtrl', function($scope, $http) {
+  $http.get("https://www.w3schools.com/angular/customers.php").then(function (response) {
+      $scope.myData = response.data.records;
+  });
+});
+app.controller('myCtrl8', function($scope) {
+    $scope.names = ["Emil", "Tobias", "Linus"];
+});
+app.controller('myCtrl9', function($scope) {
+    $scope.cars = [
+        {model : "Ford Mustang", color : "red"},
+        {model : "Fiat 500", color : "white"},
+        {model : "Volvo XC90", color : "black"}
+    ];
+});
+
+app.controller('myCtrl10', function($scope) {
+    $scope.cars = [
+        {model : "Ford Mustang", color : "red"},
+        {model : "Fiat 500", color : "white"},
+        {model : "Volvo XC90", color : "black"}
+    ];
+});
+
+app.controller('myCtrl', function($scope, $timeout) {
+  $scope.myHeader = "Hello World!";
+  $timeout(function () {
+      $scope.myHeader = "How are you today?";
+  }, 3000);
+});
+app.service('hexafy', function() {
+    this.myFunc = function (x) {
+        return x.toString(16);
+    }
+});
+app.controller('myCtrl', function($scope, hexafy) {
+  $scope.hex = hexafy.myFunc(255);
+});
+//custom filter example
+app.filter('myFormat',['hexafy', function(hexafy) {
+    return function(x) {
+        return hexafy.myFunc(x);
+    };
+}]);
+</script>
+
+</body>
+</html>
