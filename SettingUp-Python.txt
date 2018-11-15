@@ -1,0 +1,11 @@
+1. If behind a proxy server and unable to install python modules,
+2. cd to a folder of choice 
+3. create pip.ini with following contents
+[global]
+trusted-host = pypi.python.org
+                   pypi.org
+                   files.pythonhosted.org
+ proxy = http://172.22.218.218:8085
+4. Open terminal as administrator
+5. set PIP_CONFIG_FILE=<above pip.ini location>\pip.ini
+6. C:\Python27\Scripts\pip.exe install requests
